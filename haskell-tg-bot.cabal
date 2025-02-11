@@ -58,7 +58,7 @@ executable haskell-tg-bot
     main-is:          Main.hs
 
     -- Modules included in this executable, other than Main.
-    other-modules:    ApiModels, SendMessage
+    other-modules:    ApiModels, SendMessage, GetUpdates
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
