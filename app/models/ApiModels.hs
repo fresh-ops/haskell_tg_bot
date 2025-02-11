@@ -1,5 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
-
+{-# LANGUAGE OverloadedStrings #-}
 module ApiModels
   ( TelegramResponse (..),
     Update (..),
@@ -8,38 +7,51 @@ module ApiModels
   )
 where
 
-import Data.Aeson (FromJSON)
+import Data.Aeson (FromJSON, parseJSON, withObject, (.:))
 import Data.Text (Text)
-import GHC.Generics (Generic)
 
 data TelegramResponse = TelegramResponse
   { ok :: Bool,
     result :: [Update]
   }
-  deriving (Show, Generic)
+  deriving (Show)
 
 data Update = Update
   { updateId :: Int,
     message :: Maybe Message
   }
-  deriving (Show, Generic)
+  deriving (Show)
 
 data Message = Message
   { messageId :: Int,
     chat :: Chat,
     text :: Maybe Text
   }
-  deriving (Show, Generic)
+  deriving (Show)
 
-data Chat = Chat
-  { chatId :: Int
-  }
-  deriving (Show, Generic)
+newtype Chat = Chat {chatId :: Int} deriving (Show)
 
-instance FromJSON TelegramResponse
+-- Экземпляры FromJSON для парсинга JSON
+instance FromJSON TelegramResponse where
+  parseJSON = withObject "TelegramResponse" $ \v ->
+    TelegramResponse
+      <$> v .: "ok"
+      <*> v .: "result"
 
-instance FromJSON Update
+instance FromJSON Update where
+  parseJSON = withObject "Update" $ \v ->
+    Update
+      <$> v .: "update_id"
+      <*> v .: "message"
 
-instance FromJSON Message
+instance FromJSON Message where
+  parseJSON = withObject "Message" $ \v ->
+    Message
+      <$> v .: "message_id"
+      <*> v .: "chat"
+      <*> v .: "text"
 
-instance FromJSON Chat
+instance FromJSON Chat where
+  parseJSON = withObject "Chat" $ \v ->
+    Chat
+      <$> v .: "id"
