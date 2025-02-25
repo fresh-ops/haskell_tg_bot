@@ -58,7 +58,7 @@ executable haskell-tg-bot
     main-is:          Main.hs
 
     -- Modules included in this executable, other than Main.
-    other-modules:    ApiModels, SendMessage, GetUpdates
+    other-modules:    ApiModels, SendMessage, GetUpdates, Config
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
@@ -69,6 +69,8 @@ executable haskell-tg-bot
                       text ^>=2.1.2,
                       wreq ^>=0.5.4.3,
                       lens ^>=5.3.3,
+                      bytestring ^>=0.12.2.0,
+                      utf8-string ^>= 1.0.2,
 
     -- Directories containing source files.
     hs-source-dirs:   app, app/models, app/api
